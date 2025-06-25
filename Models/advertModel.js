@@ -1,9 +1,7 @@
 import { model, Schema } from "mongoose";
 import normalize from "normalize-mongoose";
 
-// Define your allowed values for category and university
-const categories = ['Electronics', 'Clothing & Accessories', 'Hostel Essentials', 'Books', 'Other'];
-
+// 🎓 Allowed universities
 const universities = [
   'University Of Ghana',
   'Kwame Nkrumah University of Science and Technology (KNUST)',
@@ -25,22 +23,39 @@ const universities = [
   'Other'
 ];
 
+// 🗂️ Allowed categories
+const categories = [
+  'Electronics',
+  'Clothing & Accessories',
+  'Hostel Essentials',
+  'Books',
+  'Other'
+];
+
+// 📦 Advert schema
 const advertSchema = new Schema({
   title:       { type: String, required: true },
   category:    { type: String, enum: categories, required: true },
   description: { type: String, required: true },
-  images:      [{ type: String }],
+  images: {
+    type: [String],
+    required: true,
+    validate: {
+      validator: arr => Array.isArray(arr) && arr.length > 0,
+      message: "At least one image is required"
+    }
+  },
   university:  { type: String, enum: universities, required: true },
-  datePosted:  { type: Date, default: Date.now },
   location:    { type: String, required: true },
-  views:       { type: Number, default: 0 },
   vendorId:    { type: Schema.Types.ObjectId, ref: "User", required: true },
-  isActive:    { type: Boolean, default: true },
   price:       { type: Number, required: true },
-  condition:   { type: String, enum: ['New', 'Used'], required: true }
+  condition:   { type: String, enum: ['New', 'Used'], required: true },
+  datePosted:  { type: Date, default: Date.now },
+  views:       { type: Number, default: 0 },
+  isActive:    { type: Boolean, default: true }
 }, { timestamps: true });
 
-// 🔠 Case-insensitive normalization before saving
+// 🔡 Normalize casing for dropdown fields
 advertSchema.pre("save", function (next) {
   const toTitleCase = str =>
     str.toLowerCase().replace(/\b\w/g, char => char.toUpperCase());
@@ -52,6 +67,7 @@ advertSchema.pre("save", function (next) {
 });
 
 advertSchema.plugin(normalize);
+
 export const Advert = model("Advert", advertSchema);
 
 // import { model, Schema } from "mongoose";
