@@ -3,9 +3,16 @@ import { User } from "../Models/userModel.js";
 
 // 🔧 Helper function to normalize enum input
 const normalizeEnum = (value, map) => {
-  const key = value?.trim().toLowerCase();
+  if (typeof value !== 'string') return null;
+
+  const key = value.trim().toLowerCase();
   return map[key] || null;
 };
+
+// const normalizeEnum = (value, map) => {
+//   const key = value?.trim().toLowerCase();
+//   return map[key] || null;
+// };
 
 // ✅ CREATE AD
 export const createAd = async (req, res) => {
