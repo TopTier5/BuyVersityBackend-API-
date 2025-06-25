@@ -39,13 +39,13 @@ const advertSchema = new Schema({
   views:       { type: Number, default: 0 },
   vendorId:    { type: Schema.Types.ObjectId, ref: "User", required: true },
   isActive:    { type: Boolean, default: true },
-  contact: {
-    type: String,
-    required: true,
-    match: /^0[2354567][0-9]{8}$/,
-    minlength: 10,
-    maxlength: 10
-  },
+  // contact: {
+  //   type: String,
+  //   required: true,
+  //   match: /^0[2354567][0-9]{8}$/,
+  //   minlength: 10,
+  //   maxlength: 10
+  // },
   price: {
     type: Number,
     required: true
