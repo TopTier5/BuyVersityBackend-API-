@@ -15,7 +15,7 @@ export const createAd = async (req, res) => {
       category,
       description,
       university,
-      contact,
+      // contact,
       location,
       price,
       condition
@@ -66,7 +66,7 @@ export const createAd = async (req, res) => {
       category: enumCategory,
       description,
       university: enumUniversity,
-      contact,
+      // contact,
       location,
       price,
       condition: enumCondition,
