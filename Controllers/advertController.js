@@ -2,12 +2,12 @@ import { Advert } from "../Models/advertModel.js";
 
 export const createAd = async (req, res) => {
   try {
-    const { title, category, description, university, location } = req.body;
+    const { title, category, description, university, contact, location } = req.body;
     const images = req.files.map(file => file.path);
     const vendorId = req.user.id;
 
     const advert = await Advert.create({
-      title, category, description, university, location,
+      title, category, description, university, location, contact, 
       images, vendorId
     });
 
