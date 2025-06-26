@@ -41,6 +41,7 @@ export const loginUser = async (req, res) => {
   );
 
 const currentUser = {
+  id: user._id, // <-- Add this
   name: `${user.firstName} ${user.lastName}`,
   email: user.email,
   university: user.university,
