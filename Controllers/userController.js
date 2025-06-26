@@ -15,13 +15,13 @@ export const signUp = async (req, res) => {
   const hashed = await bcrypt.hash(password, 12);
   const newUser = await User.create({ ...value, password: hashed });
 
-  const token = jwt.sign(
-    { id: newUser.id, role: newUser.role },
-    process.env.JWT_SECRET,
-    { expiresIn: "1h" }
-  );
+  // const token = jwt.sign(
+  //   { id: newUser.id, role: newUser.role },
+  //   process.env.JWT_SECRET,
+  //   { expiresIn: "1h" }
+  // );
 
-  res.status(201).json({ user: newUser, token });
+  res.status(201).json({ user: newUser.id, });
 };
 
 export const loginUser = async (req, res) => {
@@ -40,7 +40,14 @@ export const loginUser = async (req, res) => {
     { expiresIn: "1h" }
   );
 
-  res.json({ user, token });
+const currentUser = {
+  name: `${user.firstName} ${user.lastName}`,
+  email: user.email,
+  university: user.university,
+  contact: user.contact
+};
+
+  res.json({ user:currentUser, token });
 };
 
 export const getVendorSummary = async (req, res) => {
