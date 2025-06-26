@@ -94,13 +94,34 @@ export const createAd = async (req, res) => {
 export const getAllAds = async (req, res) => {
   try {
     const search = req.query.search || "";
-    const query = { title: { $regex: search, $options: "i" } };
+
+    // Base query: match by title (case-insensitive)
+    const query = {
+      title: { $regex: search, $options: "i" }
+    };
+
+    // 🔐 If a vendor is logged in, restrict to their own ads
+    if (req.user && req.user.role === "vendor") {
+      query.vendorId = req.user.id;
+    }
+
     const ads = await Advert.find(query).populate("vendorId", "firstName lastName");
     res.json(ads);
   } catch (err) {
     res.status(500).json({ message: "Failed to fetch ads" });
   }
 };
+
+// export const getAllAds = async (req, res) => {
+//   try {
+//     const search = req.query.search || "";
+//     const query = { title: { $regex: search, $options: "i" } };
+//     const ads = await Advert.find(query).populate("vendorId", "firstName lastName");
+//     res.json(ads);
+//   } catch (err) {
+//     res.status(500).json({ message: "Failed to fetch ads" });
+//   }
+// };
 
 // ✅ GET SINGLE AD BY ID + INCREMENT VIEWS
 export const getAd = async (req, res) => {
